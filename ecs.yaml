@@ -1,0 +1,6 @@
+imports:
+    - { resource: 'vendor/contao/easy-coding-standard/config/default.yaml' }
+
+services:
+    PhpCsFixer\Fixer\Comment\HeaderCommentFixer:
+        header: "This file is part of fe-openid-provider.\n\n(c) Erik Wegner\n\n@license LGPL-3.0-or-later"
