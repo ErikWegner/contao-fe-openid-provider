@@ -5,3 +5,4 @@
 # PhpUnit
 /.phpunit.result.cache
 /phpunit.xml
+/nbproject/private/
