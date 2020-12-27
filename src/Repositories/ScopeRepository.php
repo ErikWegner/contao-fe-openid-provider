@@ -6,13 +6,12 @@ use ErikWegner\FeOpenidProvider\Model\ScopeModel;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Repositories\ScopeRepositoryInterface;
 
-class ScopeRepository implements ScopeRepositoryInterface
-{
+class ScopeRepository implements ScopeRepositoryInterface {
+
     /**
      * {@inheritdoc}
      */
-    public function getScopeEntityByIdentifier($scopeIdentifier)
-    {
+    public function getScopeEntityByIdentifier($scopeIdentifier) {
         $scopes = [
             'basic' => [
                 'description' => 'Basic details about you',
@@ -50,4 +49,5 @@ class ScopeRepository implements ScopeRepositoryInterface
 
         return $scopes;
     }
+
 }

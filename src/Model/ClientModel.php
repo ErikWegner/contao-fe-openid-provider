@@ -7,12 +7,6 @@ use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Entities\Traits\ClientTrait;
 use League\OAuth2\Server\Entities\Traits\EntityTrait;
 
-/**
- * 
- * @property integer $id
- * @property integer $tstamp
- * @property string $city;
- */
 class ClientModel extends Model implements ClientEntityInterface {
 
     use EntityTrait,
@@ -35,5 +29,4 @@ class ClientModel extends Model implements ClientEntityInterface {
         return $this->getRelated('tl_feopenid_redirecturi');
     }
 
-    
 }
