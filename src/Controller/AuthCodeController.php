@@ -12,14 +12,28 @@ declare(strict_types=1);
 
 namespace ErikWegner\FeOpenidProvider\Controller;
 
+use Laminas\Diactoros\Stream;
 use ErikWegner\FeOpenidProvider\Service\AuthorizationServerService;
 use ErikWegner\FeOpenidProvider\Model\UserModel;
+use Nyholm\Psr7\Factory\Psr17Factory;
+use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
+use Symfony\Bridge\PsrHttpMessage\Factory\PsrHttpFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class AuthCodeController
 {
+    /**
+     * @var Symfony\Bridge\PsrHttpMessage\Factory\PsrHttpFactory PsrHttpFactory
+     */
+    private $psrHttpFactory;
+    
+    /**
+     * @var Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory HttpFoundationFactory
+     */
+    private $httpFoundationFactory;
+    
     /**
      * @var ErikWegner\FeOpenidProvider\Service\AuthorizationServerService AuthorizationServer
      */
@@ -28,13 +42,17 @@ class AuthCodeController
     public function __construct(AuthorizationServerService $server)
     {
         $this->server = $server;
+        $psr17Factory = new Psr17Factory();
+        $this->psrHttpFactory = new PsrHttpFactory($psr17Factory, $psr17Factory, $psr17Factory, $psr17Factory);
+        $this->httpFoundationFactory = new HttpFoundationFactory();
     }
 
     /**
      * @Route("/fe/authorize", name="feopenidprovider.authcode.authorize", methods={"GET"})
      */
-    public function authorize(Request $request): Response
+    public function authorize(Request $symfonyRequest): Response
     {
+        $request = $this->psrHttpFactory->createRequest($symfonyRequest);
         $server = $this->server->getServer();
         try {
             // Validate the HTTP request and return an AuthorizationRequest object.
@@ -56,7 +74,7 @@ class AuthCodeController
             $body = new Stream('php://temp', 'r+');
             $body->write($exception->getMessage());
 
-            return $response->withStatus(500)->withBody($body);
+            return $this->httpFoundationFactory->createResponse($response->withStatus(500)->withBody($body));
         }
     }
 
