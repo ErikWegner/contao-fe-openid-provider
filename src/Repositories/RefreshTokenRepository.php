@@ -1,45 +1,46 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * This file is part of fe-openid-provider.
+ *
+ * (c) Erik Wegner
+ *
+ * @license LGPL-3.0-or-later
+ */
+
 namespace ErikWegner\FeOpenidProvider\Repositories;
 
+use ErikWegner\FeOpenidProvider\Model\RefreshTokenModel;
 use League\OAuth2\Server\Entities\RefreshTokenEntityInterface;
 use League\OAuth2\Server\Repositories\RefreshTokenRepositoryInterface;
-use OAuth2ServerExamples\Entities\RefreshTokenEntity;
-use ErikWegner\FeOpenidProvider\Model\RefreshTokenModel;
 
-class RefreshTokenRepository implements RefreshTokenRepositoryInterface {
-
-    /**
-     * {@inheritdoc}
-     */
-    public function persistNewRefreshToken(RefreshTokenEntityInterface $refreshTokenEntity) {
+class RefreshTokenRepository implements RefreshTokenRepositoryInterface
+{
+    public function persistNewRefreshToken(RefreshTokenEntityInterface $refreshTokenEntity): void
+    {
         // Some logic to persist the refresh token in a database
         $refreshTokenEntity->save();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function revokeRefreshToken($tokenId) {
+    public function revokeRefreshToken($tokenId): void
+    {
         // Some logic to revoke the refresh token in a database
         $token = RefreshTokenModel::findById($tokenId);
         $token->revoked = '1';
         $token->save();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isRefreshTokenRevoked($tokenId) {
+    public function isRefreshTokenRevoked($tokenId)
+    {
         $token = RefreshTokenModel::findById($tokenId);
-        return $token->revoked === '1';
+
+        return '1' === $token->revoked;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getNewRefreshToken() {
+    public function getNewRefreshToken()
+    {
         return new RefreshTokenModel();
     }
-
 }

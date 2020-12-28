@@ -19,7 +19,6 @@ use League\OAuth2\Server\Entities\Traits\AccessTokenTrait;
 use League\OAuth2\Server\Entities\Traits\EntityTrait;
 use League\OAuth2\Server\Entities\Traits\TokenEntityTrait;
 
-
 class AccessTokenModel extends Model implements AccessTokenEntityInterface
 {
     use AccessTokenTrait;
@@ -36,7 +35,7 @@ class AccessTokenModel extends Model implements AccessTokenEntityInterface
     /**
      * Associate a scope with the token.
      */
-    public function addScope(ScopeEntityInterface $scope)
+    public function addScope(ScopeEntityInterface $scope): void
     {
         $a = $this->getScopes();
         $a[] = $scope;
@@ -55,7 +54,7 @@ class AccessTokenModel extends Model implements AccessTokenEntityInterface
      */
     public function getScopes()
     {
-        if ($this->arrscopes == '') {
+        if ('' === $this->arrscopes) {
             return [];
         }
 

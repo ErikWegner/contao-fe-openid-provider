@@ -12,8 +12,8 @@ declare(strict_types=1);
 
 namespace ErikWegner\FeOpenidProvider\Repositories;
 
-use ErikWegner\FeOpenidProvider\Model\AuthCodeModel;
 use ErikWegner\FeOpenidProvider\Model\AuthCodeEntity;
+use ErikWegner\FeOpenidProvider\Model\AuthCodeModel;
 use League\OAuth2\Server\Entities\AuthCodeEntityInterface;
 use League\OAuth2\Server\Repositories\AuthCodeRepositoryInterface;
 
