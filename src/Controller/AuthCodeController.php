@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace ErikWegner\FeOpenidProvider\Controller;
 
+use ErikWegner\FeOpenidProvider\Entities\UserEntity;
 use ErikWegner\FeOpenidProvider\Model\UserModel;
 use ErikWegner\FeOpenidProvider\Service\AuthorizationServerService;
 use Laminas\Diactoros\Stream;
@@ -19,12 +20,14 @@ use League\OAuth2\Server\Exception\OAuthServerException;
 use Nyholm\Psr7\Factory\Psr17Factory;
 use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
 use Symfony\Bridge\PsrHttpMessage\Factory\PsrHttpFactory;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\UriSigner;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
 
-class AuthCodeController
+class AuthCodeController extends AbstractController
 {
     /**
      * @var PsrHttpFactory PsrHttpFactory
@@ -51,10 +54,16 @@ class AuthCodeController
      */
     private $security;
 
-    public function __construct(AuthorizationServerService $server, Security $security)
+    /**
+     * @var Security Authorization
+     */
+    private $uriSigner;
+
+    public function __construct(AuthorizationServerService $server, Security $security, UriSigner $uriSigner)
     {
         $this->server = $server;
         $this->security = $security;
+        $this->uriSigner = $uriSigner;
         $psr17Factory = new Psr17Factory();
         $this->psr17Factory = $psr17Factory;
         $this->psrHttpFactory = new PsrHttpFactory($psr17Factory, $psr17Factory, $psr17Factory, $psr17Factory);
@@ -66,6 +75,13 @@ class AuthCodeController
      */
     public function authorize(Request $symfonyRequest): Response
     {
+        $feuser = $this->security->getUser();
+        if (!$feuser) {
+            $uri = $symfonyRequest->getUriForPath('/fe-login.html');
+            $signedUri = $this->uriSigner->sign($uri . '?redirect=' . \urlencode($symfonyRequest->getUri()));
+            return $this->redirect($signedUri);
+        }
+
         $request = $this->psrHttpFactory->createRequest($symfonyRequest);
         $server = $this->server->getServer();
         $response = $this->psr17Factory->createResponse();
@@ -75,9 +91,10 @@ class AuthCodeController
             $authRequest = $server->validateAuthorizationRequest($request);
 
             // Once the user has logged in set the user on the AuthorizationRequest
-            $feuser = $this->security->getUser();
             if ($feuser) {
-                $authRequest->setUser(UserModel::findByPk($feuser->id));
+                $ue = new UserEntity();
+                $ue->setIdentifier($feuser->id);
+                $authRequest->setUser($ue);
             } else {
                 $authRequest->setUser(new UserModel());
             }

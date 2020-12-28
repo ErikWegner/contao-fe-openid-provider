@@ -12,5 +12,6 @@ services:
         arguments:
             - '@feopenidprovider.service'
             - '@security.helper'
+            - '@uri_signer'
         tags:
             - controller.service_arguments
