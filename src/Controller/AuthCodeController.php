@@ -35,6 +35,10 @@ class AuthCodeController
     private $httpFoundationFactory;
     
     /**
+     * @var Nyholm\Psr7\Factory\Psr17Factory Psr17Factory
+     */
+    private $psr17Factory;
+    /**
      * @var ErikWegner\FeOpenidProvider\Service\AuthorizationServerService AuthorizationServer
      */
     private $server;
@@ -43,6 +47,7 @@ class AuthCodeController
     {
         $this->server = $server;
         $psr17Factory = new Psr17Factory();
+        $this->psr17Factory = $psr17Factory;
         $this->psrHttpFactory = new PsrHttpFactory($psr17Factory, $psr17Factory, $psr17Factory, $psr17Factory);
         $this->httpFoundationFactory = new HttpFoundationFactory();
     }
@@ -54,6 +59,7 @@ class AuthCodeController
     {
         $request = $this->psrHttpFactory->createRequest($symfonyRequest);
         $server = $this->server->getServer();
+        $response = $this->psr17Factory->createResponse();
         try {
             // Validate the HTTP request and return an AuthorizationRequest object.
             // The auth request object can be serialized into a user's session
@@ -67,9 +73,9 @@ class AuthCodeController
             $authRequest->setAuthorizationApproved(true);
 
             // Return the HTTP redirect response
-            return $server->completeAuthorizationRequest($authRequest, $response);
+            return $this->httpFoundationFactory->createResponse($server->completeAuthorizationRequest($authRequest, $response));
         } catch (OAuthServerException $exception) {
-            return $exception->generateHttpResponse($response);
+            return $this->httpFoundationFactory->createResponse($exception->generateHttpResponse($response));
         } catch (\Exception $exception) {
             $body = new Stream('php://temp', 'r+');
             $body->write($exception->getMessage());
@@ -81,13 +87,20 @@ class AuthCodeController
     /**
      * @Route("/fe/access_token", name="feopenidprovider.authcode.access_token", methods={"POST"})
      */
-    public function access_token(Request $request): Response
+    public function access_token(Request $symfonyRequest): Response
     {
-        $array = [];
-        $array['d'] = 'GET OK';
-        $response = new Response(json_encode($array), 200);
-        $response->headers->set('Content-Type', 'application/json');
+        $request = $this->psrHttpFactory->createRequest($symfonyRequest);
+        $server = $this->server->getServer();
+        $response = $this->psr17Factory->createResponse();
+        try {
+            return $this->httpFoundationFactory->createResponse($server->respondToAccessTokenRequest($request, $response));
+        } catch (OAuthServerException $exception) {
+            return $this->httpFoundationFactory->createResponse($exception->generateHttpResponse($response));
+        } catch (\Exception $exception) {
+            $body = new Stream('php://temp', 'r+');
+            $body->write($exception->getMessage());
 
-        return $response;
+            return $this->httpFoundationFactory->createResponse($response->withStatus(500)->withBody($body));
+        }
     }
 }

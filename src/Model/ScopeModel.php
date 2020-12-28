@@ -20,16 +20,4 @@ class ScopeModel implements ScopeEntityInterface
 {
     use EntityTrait;
     use ScopeTrait;
-
-    private $identifier;
-
-    public function getIdentifier()
-    {
-        return $this->identifier;
-    }
-
-    public function setIdentifier($i): void
-    {
-        $this->identifier = $i;
-    }
 }

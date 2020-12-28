@@ -37,5 +37,18 @@ contao:
       encryptionkey: <generated string password>
 ```
 
+## Usage
+
+Setup a client
+
+### Client OpenID settings:
+
+Grant Type: authorization code  
+Callback URL: One of the configured redirect URI values  
+Auth URL: https://your.contao.install/fe/authorize  
+Access Token URL: https://your.contao.install/fe/access_token  
+Client ID: The configured `identifier` for the app  
+Scope: email|basic  
+
 [1]: https://contao.org
 [2]: https://oauth2.thephpleague.com/installation/

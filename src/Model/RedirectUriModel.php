@@ -17,7 +17,7 @@ use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Entities\Traits\ClientTrait;
 use League\OAuth2\Server\Entities\Traits\EntityTrait;
 
-class ClientModel extends Model implements ClientEntityInterface
+class RedirectUriModel extends Model implements ClientEntityInterface
 {
     use EntityTrait;
     use ClientTrait;
@@ -27,17 +27,5 @@ class ClientModel extends Model implements ClientEntityInterface
      *
      * @var string
      */
-    protected static $strTable = 'tl_feopenid_client';
-
-    /**
-     * Returns the registered redirect URI (as a string).
-     *
-     * Alternatively return an indexed array of redirect URIs.
-     *
-     * @return string|array<string>
-     */
-    public function getRedirectUri()
-    {
-        return RedirectUriModel::findBy('pid', $this->id);
-    }
+    protected static $strTable = 'tl_feopenid_redirecturi';
 }
