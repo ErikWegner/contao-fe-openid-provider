@@ -18,8 +18,12 @@ $GLOBALS['TL_DCA']['tl_feopenid_redirecturi'] = [
             'headerFields' => ['uri'],
             'panelLayout' => 'search,limit',
             'child_record_callback' => function (array $row) {
-                return '<div class="tl_content_left">'.$row['uri'].' ['.$row['number'].']</div>';
+                return '<div class="tl_content_left">' . $row['uri'] . ' [' . $row['number'] . ']</div>';
             },
+        ],
+        'label' => [
+            'fields' => ['uri'],
+            'format' => '%s',
         ],
         'operations' => [
             'edit' => [
@@ -43,7 +47,7 @@ $GLOBALS['TL_DCA']['tl_feopenid_redirecturi'] = [
         'pid' => [
             'foreignKey' => 'tl_feopenid_client.name',
             'sql' => ['type' => 'integer', 'unsigned' => true, 'default' => 0],
-            'relation' => ['type'=>'belongsTo', 'load'=>'lazy']
+            'relation' => ['type' => 'belongsTo', 'load' => 'lazy']
         ],
         'tstamp' => [
             'sql' => ['type' => 'integer', 'unsigned' => true, 'default' => 0]

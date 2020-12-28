@@ -12,12 +12,12 @@ $GLOBALS['TL_DCA']['tl_feopenid_accesstoken'] = [
     'list' => [
         'sorting' => [
             'mode' => 1,
-            'fields' => ['name'],
+            'fields' => ['client'],
             'flag' => 1,
             'panelLayout' => 'search,limit'
         ],
         'label' => [
-            'fields' => ['name'],
+            'fields' => ['client'],
             'format' => '%s',
         ],
         'operations' => [

@@ -28,12 +28,12 @@ class AuthCodeController
      * @var Symfony\Bridge\PsrHttpMessage\Factory\PsrHttpFactory PsrHttpFactory
      */
     private $psrHttpFactory;
-    
+
     /**
      * @var Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory HttpFoundationFactory
      */
     private $httpFoundationFactory;
-    
+
     /**
      * @var Nyholm\Psr7\Factory\Psr17Factory Psr17Factory
      */

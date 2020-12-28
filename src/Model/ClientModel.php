@@ -38,6 +38,11 @@ class ClientModel extends Model implements ClientEntityInterface
      */
     public function getRedirectUri()
     {
-        return RedirectUriModel::findBy('pid', $this->id);
+        $col = RedirectUriModel::findBy('pid', $this->id);
+        $cols = [];
+        foreach ($col as $e) {
+            $cols[] = $e->uri;
+        }
+        return $cols;
     }
 }

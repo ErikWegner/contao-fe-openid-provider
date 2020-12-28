@@ -25,10 +25,10 @@ class AuthorizationServerService
      * @var League\OAuth2\Server\AuthorizationServer Authorization Server
      */
     private $server;
-    
-    
+
+
     /**
-     * @var Config The configuration 
+     * @var Config The configuration
      */
     protected $config;
 
@@ -36,7 +36,8 @@ class AuthorizationServerService
      * Gets the configuration.
      * @return Config The Configuration
      */
-    protected function getConfig() {
+    protected function getConfig()
+    {
         if (!isset($this->config)) {
             $this->framework->initialize();
             $this->config = $this->framework->getAdapter(Config::class);
@@ -44,14 +45,16 @@ class AuthorizationServerService
 
         return $this->config;
     }
-    
-    function __construct(ContaoFramework $framework) {
+
+    function __construct(ContaoFramework $framework)
+    {
         $this->framework = $framework;
     }
-    
-    
-    function getServer(): LeagueAuthorizationServer {
-        if (!isset($this->server)) {            
+
+
+    function getServer(): LeagueAuthorizationServer
+    {
+        if (!isset($this->server)) {
             $clientRepository = new ClientRepository();
             $scopeRepository = new ScopeRepository();
             $accessTokenRepository = new AccessTokenRepository();
@@ -60,7 +63,7 @@ class AuthorizationServerService
 
             $configs = $this->getConfig()->get('feopenidprovider');
             $privateKeyPath = $configs['keypath'] . '/private.key';
-            
+
             $this->server = new LeagueAuthorizationServer(
                 $clientRepository,
                 $accessTokenRepository,
@@ -69,16 +72,18 @@ class AuthorizationServerService
                 $configs['encryptionkey']
             );
 
+            $authCodeGrant = new AuthCodeGrant(
+                $authCodeRepository,
+                $refreshTokenRepository,
+                new \DateInterval('PT10M')
+            );
+            $authCodeGrant->disableRequireCodeChallengeForPublicClients();
             $this->server->enableGrantType(
-                new AuthCodeGrant(
-                    $authCodeRepository,
-                    $refreshTokenRepository,
-                    new \DateInterval('PT10M')
-                ),
+                $authCodeGrant,
                 new \DateInterval('PT1H')
             );
         }
-        
+
         return $this->server;
     }
 }
