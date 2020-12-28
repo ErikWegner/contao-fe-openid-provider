@@ -12,18 +12,14 @@ declare(strict_types=1);
 
 namespace ErikWegner\FeOpenidProvider\Repositories;
 
-use League\OAuth2\Server\Entities\RefreshTokenEntityInterface;
-use League\OAuth2\Server\Repositories\RefreshTokenRepositoryInterface;
 use ErikWegner\FeOpenidProvider\Entities\RefreshTokenEntity;
 use ErikWegner\FeOpenidProvider\Model\RefreshTokenModel;
+use League\OAuth2\Server\Entities\RefreshTokenEntityInterface;
+use League\OAuth2\Server\Repositories\RefreshTokenRepositoryInterface;
 
 class RefreshTokenRepository implements RefreshTokenRepositoryInterface
 {
-
-    /**
-     * {@inheritdoc}
-     */
-    public function persistNewRefreshToken(RefreshTokenEntityInterface $refreshTokenEntity)
+    public function persistNewRefreshToken(RefreshTokenEntityInterface $refreshTokenEntity): void
     {
         // Some logic to persist the refresh token in a database
         $refreshTokenModel = new RefreshTokenModel();
@@ -33,10 +29,7 @@ class RefreshTokenRepository implements RefreshTokenRepositoryInterface
         $refreshTokenModel->save();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function revokeRefreshToken($tokenId)
+    public function revokeRefreshToken($tokenId): void
     {
         // Some logic to revoke the refresh token in a database
         $token = RefreshTokenModel::findByPk($tokenId);
@@ -44,18 +37,13 @@ class RefreshTokenRepository implements RefreshTokenRepositoryInterface
         $token->save();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isRefreshTokenRevoked($tokenId)
     {
         $token = RefreshTokenModel::findByPk($tokenId);
-        return $token->revoked === '1';
+
+        return '1' === $token->revoked;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getNewRefreshToken()
     {
         return new RefreshTokenEntity();

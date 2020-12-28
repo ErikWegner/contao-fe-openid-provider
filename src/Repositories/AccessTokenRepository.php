@@ -56,6 +56,7 @@ class AccessTokenRepository implements AccessTokenRepositoryInterface
     {
         $accessToken = new AccessTokenEntity();
         $accessToken->setClient($clientEntity);
+
         foreach ($scopes as $scope) {
             $accessToken->addScope($scope);
         }

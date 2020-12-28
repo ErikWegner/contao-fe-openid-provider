@@ -30,7 +30,8 @@ class RefreshTokenModel extends Model implements RefreshTokenEntityInterface
     protected static $strTable = 'tl_feopenid_refreshtoken';
 
     /**
-     * Primary key
+     * Primary key.
+     *
      * @var string
      */
     protected static $strPk = 'token';

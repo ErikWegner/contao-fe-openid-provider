@@ -16,7 +16,6 @@ use Contao\Model;
 
 class AccessTokenModel extends Model
 {
-
     /**
      * Table name.
      *
@@ -25,7 +24,8 @@ class AccessTokenModel extends Model
     protected static $strTable = 'tl_feopenid_accesstoken';
 
     /**
-     * Primary key
+     * Primary key.
+     *
      * @var string
      */
     protected static $strPk = 'code';
