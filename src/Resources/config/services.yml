@@ -11,5 +11,6 @@ services:
     ErikWegner\FeOpenidProvider\Controller\AuthCodeController:
         arguments:
             - '@feopenidprovider.service'
+            - '@security.helper'
         tags:
             - controller.service_arguments

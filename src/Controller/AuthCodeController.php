@@ -22,6 +22,7 @@ use Symfony\Bridge\PsrHttpMessage\Factory\PsrHttpFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Security;
 
 class AuthCodeController
 {
@@ -39,14 +40,21 @@ class AuthCodeController
      * @var Psr17Factory Psr17Factory
      */
     private $psr17Factory;
+
     /**
      * @var AuthorizationServerService AuthorizationServer
      */
     private $server;
 
-    public function __construct(AuthorizationServerService $server)
+    /**
+     * @var Security Authorization
+     */
+    private $security;
+
+    public function __construct(AuthorizationServerService $server, Security $security)
     {
         $this->server = $server;
+        $this->security = $security;
         $psr17Factory = new Psr17Factory();
         $this->psr17Factory = $psr17Factory;
         $this->psrHttpFactory = new PsrHttpFactory($psr17Factory, $psr17Factory, $psr17Factory, $psr17Factory);
@@ -54,21 +62,25 @@ class AuthCodeController
     }
 
     /**
-     * @Route("/fe/authorize", name="feopenidprovider.authcode.authorize", methods={"GET"})
+     * @Route("/fe/authorize", name="feopenidprovider.authcode.authorize", methods={"GET"}, defaults={"_scope": "frontend"})
      */
     public function authorize(Request $symfonyRequest): Response
     {
         $request = $this->psrHttpFactory->createRequest($symfonyRequest);
         $server = $this->server->getServer();
         $response = $this->psr17Factory->createResponse();
-
         try {
             // Validate the HTTP request and return an AuthorizationRequest object.
             // The auth request object can be serialized into a user's session
             $authRequest = $server->validateAuthorizationRequest($request);
 
             // Once the user has logged in set the user on the AuthorizationRequest
-            $authRequest->setUser(new UserModel());
+            $feuser = $this->security->getUser();
+            if ($feuser) {
+                $authRequest->setUser(UserModel::findByPk($feuser->id));
+            } else {
+                $authRequest->setUser(new UserModel());
+            }
 
             // Once the user has approved or denied the client update the status
             // (true = approved, false = denied)
