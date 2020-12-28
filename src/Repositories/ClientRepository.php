@@ -21,8 +21,8 @@ class ClientRepository implements ClientRepositoryInterface {
      * Validate a client's secret.
      *
      * @param string      $clientIdentifier The client's identifier
-     * @param null|string $clientSecret     The client's secret (if sent)
-     * @param null|string $grantType        The type of grant the client is using (if sent)
+     * @param string|null $clientSecret The client's secret (if sent)
+     * @param string|null $grantType The type of grant the client is using (if sent)
      *
      * @return bool
      */
