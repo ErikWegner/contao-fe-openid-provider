@@ -13,21 +13,20 @@ declare(strict_types=1);
 namespace ErikWegner\FeOpenidProvider\Model;
 
 use Contao\Model;
-use League\OAuth2\Server\Entities\AuthCodeEntityInterface;
-use League\OAuth2\Server\Entities\Traits\AuthCodeTrait;
-use League\OAuth2\Server\Entities\Traits\EntityTrait;
-use League\OAuth2\Server\Entities\Traits\TokenEntityTrait;
 
-class AuthCodeModel extends Model implements AuthCodeEntityInterface
+class AuthCodeModel extends Model 
 {
-    use EntityTrait;
-    use TokenEntityTrait;
-    use AuthCodeTrait;
 
     /**
      * Table name.
      *
      * @var string
      */
-    protected static $strTable = 'tl_feopenid_accesstoken';
+    protected static $strTable = 'tl_feopenid_authcode';
+
+	/**
+	 * Primary key
+	 * @var string
+	 */
+	protected static $strPk = 'code';
 }

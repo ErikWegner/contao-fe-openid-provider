@@ -6,3 +6,4 @@ $GLOBALS['BE_MOD']['system']['feopenid'] = [
 
 $GLOBALS['TL_MODELS']['tl_feopenid_client'] = ErikWegner\FeOpenidProvider\Model\ClientModel::class;
 $GLOBALS['TL_MODELS']['tl_feopenid_redirecturi'] = ErikWegner\FeOpenidProvider\Model\RedirectUriModel::class;
+$GLOBALS['TL_MODELS']['tl_feopenid_accesstoken'] = ErikWegner\FeOpenidProvider\Model\AccessTokenModel::class;

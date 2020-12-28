@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace ErikWegner\FeOpenidProvider\Repositories;
 
 use ErikWegner\FeOpenidProvider\Model\AuthCodeModel;
+use ErikWegner\FeOpenidProvider\Model\AuthCodeEntity;
 use League\OAuth2\Server\Entities\AuthCodeEntityInterface;
 use League\OAuth2\Server\Repositories\AuthCodeRepositoryInterface;
 
@@ -21,7 +22,15 @@ class AuthCodeRepository implements AuthCodeRepositoryInterface
     public function persistNewAuthCode(AuthCodeEntityInterface $authCodeEntity): void
     {
         // Some logic to persist the auth code to a database
-        $authCodeEntity->save();
+        $authCodeModel = new AuthCodeModel();
+        $authCodeModel->code = $authCodeEntity->getIdentifier();
+        $authCodeModel->arrscopes = implode(',', array_map(
+            static function ($s) {
+                return $s->getIdentifier();
+            },
+            $authCodeEntity->getScopes()
+        ));
+        $authCodeModel->save();
     }
 
     public function revokeAuthCode($codeId): void
@@ -41,6 +50,6 @@ class AuthCodeRepository implements AuthCodeRepositoryInterface
 
     public function getNewAuthCode()
     {
-        return new AuthCodeModel();
+        return new AuthCodeEntity();
     }
 }
