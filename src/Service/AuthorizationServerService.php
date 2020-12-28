@@ -55,7 +55,7 @@ class AuthorizationServerService
             $refreshTokenRepository = new RefreshTokenRepository();
 
             $configs = $this->getConfig()->get('feopenidprovider');
-            $privateKeyPath = $configs['keypath'].'/private.key';
+            $privateKeyPath = $configs['keypath'] . '/private.key';
 
             $this->server = new LeagueAuthorizationServer(
                 $clientRepository,

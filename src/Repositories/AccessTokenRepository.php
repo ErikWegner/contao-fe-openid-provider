@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace ErikWegner\FeOpenidProvider\Repositories;
 
+use Contao\MemberModel;
 use ErikWegner\FeOpenidProvider\Entities\AccessTokenEntity;
 use ErikWegner\FeOpenidProvider\Model\AccessTokenModel;
 use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
@@ -61,6 +62,8 @@ class AccessTokenRepository implements AccessTokenRepositoryInterface
             $accessToken->addScope($scope);
         }
         $accessToken->setUserIdentifier($userIdentifier);
+        $member = MemberModel::findByPk($userIdentifier);
+        $accessToken->setMember($member);
 
         return $accessToken;
     }
