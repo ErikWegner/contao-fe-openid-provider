@@ -14,9 +14,8 @@ namespace ErikWegner\FeOpenidProvider\Model;
 
 use Contao\Model;
 
-class AuthCodeModel extends Model 
+class AuthCodeModel extends Model
 {
-
     /**
      * Table name.
      *
@@ -24,9 +23,10 @@ class AuthCodeModel extends Model
      */
     protected static $strTable = 'tl_feopenid_authcode';
 
-	/**
-	 * Primary key
-	 * @var string
-	 */
-	protected static $strPk = 'code';
+    /**
+     * Primary key.
+     *
+     * @var string
+     */
+    protected static $strPk = 'code';
 }

@@ -40,9 +40,11 @@ class ClientModel extends Model implements ClientEntityInterface
     {
         $col = RedirectUriModel::findBy('pid', $this->id);
         $cols = [];
+
         foreach ($col as $e) {
             $cols[] = $e->uri;
         }
+
         return $cols;
     }
 }

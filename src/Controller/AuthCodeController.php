@@ -12,9 +12,9 @@ declare(strict_types=1);
 
 namespace ErikWegner\FeOpenidProvider\Controller;
 
-use Laminas\Diactoros\Stream;
-use ErikWegner\FeOpenidProvider\Service\AuthorizationServerService;
 use ErikWegner\FeOpenidProvider\Model\UserModel;
+use ErikWegner\FeOpenidProvider\Service\AuthorizationServerService;
+use Laminas\Diactoros\Stream;
 use League\OAuth2\Server\Exception\OAuthServerException;
 use Nyholm\Psr7\Factory\Psr17Factory;
 use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
@@ -26,21 +26,21 @@ use Symfony\Component\Routing\Annotation\Route;
 class AuthCodeController
 {
     /**
-     * @var Symfony\Bridge\PsrHttpMessage\Factory\PsrHttpFactory PsrHttpFactory
+     * @var PsrHttpFactory PsrHttpFactory
      */
     private $psrHttpFactory;
 
     /**
-     * @var Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory HttpFoundationFactory
+     * @var HttpFoundationFactory HttpFoundationFactory
      */
     private $httpFoundationFactory;
 
     /**
-     * @var Nyholm\Psr7\Factory\Psr17Factory Psr17Factory
+     * @var Psr17Factory Psr17Factory
      */
     private $psr17Factory;
     /**
-     * @var ErikWegner\FeOpenidProvider\Service\AuthorizationServerService AuthorizationServer
+     * @var AuthorizationServerService AuthorizationServer
      */
     private $server;
 
@@ -61,6 +61,7 @@ class AuthCodeController
         $request = $this->psrHttpFactory->createRequest($symfonyRequest);
         $server = $this->server->getServer();
         $response = $this->psr17Factory->createResponse();
+
         try {
             // Validate the HTTP request and return an AuthorizationRequest object.
             // The auth request object can be serialized into a user's session
@@ -93,6 +94,7 @@ class AuthCodeController
         $request = $this->psrHttpFactory->createRequest($symfonyRequest);
         $server = $this->server->getServer();
         $response = $this->psr17Factory->createResponse();
+
         try {
             return $this->httpFoundationFactory->createResponse($server->respondToAccessTokenRequest($request, $response));
         } catch (OAuthServerException $exception) {

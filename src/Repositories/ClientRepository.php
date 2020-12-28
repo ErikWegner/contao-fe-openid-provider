@@ -1,5 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * This file is part of fe-openid-provider.
+ *
+ * (c) Erik Wegner
+ *
+ * @license LGPL-3.0-or-later
+ */
+
 namespace ErikWegner\FeOpenidProvider\Repositories;
 
 use ErikWegner\FeOpenidProvider\Model\ClientModel;
@@ -23,19 +33,20 @@ class ClientRepository implements ClientRepositoryInterface
      * Validate a client's secret.
      *
      * @param string      $clientIdentifier The client's identifier
-     * @param string|null $clientSecret The client's secret (if sent)
-     * @param string|null $grantType The type of grant the client is using (if sent)
+     * @param string|null $clientSecret     The client's secret (if sent)
+     * @param string|null $grantType        The type of grant the client is using (if sent)
      *
      * @return bool
      */
     public function validateClient($clientIdentifier, $clientSecret, $grantType)
     {
         $client = $this->getClientEntity($clientIdentifier);
-        if ($client == null) {
+
+        if (null === $client) {
             return false;
         }
 
-        if ($client->isConfidential() && $client->secret != $client) {
+        if ($client->isConfidential() && $client->secret !== $client) {
             return false;
         }
 
