@@ -5,7 +5,8 @@ namespace ErikWegner\FeOpenidProvider\Repositories;
 use ErikWegner\FeOpenidProvider\Model\ClientModel;
 use League\OAuth2\Server\Repositories\ClientRepositoryInterface;
 
-class ClientRepository implements ClientRepositoryInterface {
+class ClientRepository implements ClientRepositoryInterface
+{
     /**
      * Get a client.
      *
@@ -13,7 +14,8 @@ class ClientRepository implements ClientRepositoryInterface {
      *
      * @return ClientEntityInterface|null
      */
-    public function getClientEntity($clientIdentifier) {
+    public function getClientEntity($clientIdentifier)
+    {
         return ClientModel::findOneBy('identifier', $clientIdentifier);
     }
 
@@ -26,16 +28,17 @@ class ClientRepository implements ClientRepositoryInterface {
      *
      * @return bool
      */
-    public function validateClient($clientIdentifier, $clientSecret, $grantType) {
+    public function validateClient($clientIdentifier, $clientSecret, $grantType)
+    {
         $client = $this->getClientEntity($clientIdentifier);
         if ($client == null) {
             return false;
         }
-        
+
         if ($client->isConfidential() && $client->secret != $client) {
             return false;
         }
-        
+
         return true;
     }
 }

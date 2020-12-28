@@ -13,7 +13,7 @@ declare(strict_types=1);
 namespace ErikWegner\FeOpenidProvider\Repositories;
 
 use ErikWegner\FeOpenidProvider\Model\AuthCodeModel;
-use ErikWegner\FeOpenidProvider\Model\AuthCodeEntity;
+use ErikWegner\FeOpenidProvider\Entities\AuthCodeEntity;
 use League\OAuth2\Server\Entities\AuthCodeEntityInterface;
 use League\OAuth2\Server\Repositories\AuthCodeRepositoryInterface;
 
@@ -24,6 +24,9 @@ class AuthCodeRepository implements AuthCodeRepositoryInterface
         // Some logic to persist the auth code to a database
         $authCodeModel = new AuthCodeModel();
         $authCodeModel->code = $authCodeEntity->getIdentifier();
+        $authCodeModel->expiryDateTime = $authCodeEntity->getExpiryDateTime()->getTimestamp();
+        $authCodeModel->userIdentifier = $authCodeEntity->getUserIdentifier();
+        $authCodeModel->client = $authCodeEntity->getClient()->getIdentifier();
         $authCodeModel->arrscopes = implode(',', array_map(
             static function ($s) {
                 return $s->getIdentifier();

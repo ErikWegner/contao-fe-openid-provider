@@ -13,18 +13,9 @@ declare(strict_types=1);
 namespace ErikWegner\FeOpenidProvider\Model;
 
 use Contao\Model;
-use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
-use League\OAuth2\Server\Entities\ScopeEntityInterface;
-use League\OAuth2\Server\Entities\Traits\AccessTokenTrait;
-use League\OAuth2\Server\Entities\Traits\EntityTrait;
-use League\OAuth2\Server\Entities\Traits\TokenEntityTrait;
 
-
-class AccessTokenModel extends Model implements AccessTokenEntityInterface
+class AccessTokenModel extends Model
 {
-    use AccessTokenTrait;
-    use TokenEntityTrait;
-    use EntityTrait;
 
     /**
      * Table name.
@@ -34,41 +25,8 @@ class AccessTokenModel extends Model implements AccessTokenEntityInterface
     protected static $strTable = 'tl_feopenid_accesstoken';
 
     /**
-     * Associate a scope with the token.
+     * Primary key
+     * @var string
      */
-    public function addScope(ScopeEntityInterface $scope)
-    {
-        $a = $this->getScopes();
-        $a[] = $scope;
-        $this->arrscopes = implode(',', array_map(
-            static function ($s) {
-                return $s->getIdentifier();
-            },
-            $a
-        ));
-    }
-
-    /**
-     * Return an array of scopes associated with the token.
-     *
-     * @return array<ScopeEntityInterface>
-     */
-    public function getScopes()
-    {
-        if ($this->arrscopes == '') {
-            return [];
-        }
-
-        $v = explode(',', $this->arrscopes);
-
-        return array_map(
-            static function ($s) {
-                $t = new ScopeModel();
-                $t->setIdentifier($s);
-
-                return $t;
-            },
-            $v
-        );
-    }
+    protected static $strPk = 'code';
 }

@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace ErikWegner\FeOpenidProvider\Repositories;
 
+use ErikWegner\FeOpenidProvider\Entities\AccessTokenEntity;
 use ErikWegner\FeOpenidProvider\Model\AccessTokenModel;
 use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
@@ -22,29 +23,39 @@ class AccessTokenRepository implements AccessTokenRepositoryInterface
     public function persistNewAccessToken(AccessTokenEntityInterface $accessTokenEntity): void
     {
         // Some logic here to save the access token to a database
-        $accessTokenEntity->save();
+        $accessTokenModel = new AccessTokenModel();
+        $accessTokenModel->code = $accessTokenEntity->getIdentifier();
+        $accessTokenModel->expiryDateTime = $accessTokenEntity->getExpiryDateTime()->getTimestamp();
+        $accessTokenModel->userIdentifier = $accessTokenEntity->getUserIdentifier();
+        $accessTokenModel->client = $accessTokenEntity->getClient()->getIdentifier();
+        $accessTokenModel->arrscopes = implode(',', array_map(
+            static function ($s) {
+                return $s->getIdentifier();
+            },
+            $accessTokenEntity->getScopes()
+        ));
+        $accessTokenModel->save();
     }
 
     public function revokeAccessToken($tokenId): void
     {
         // Some logic here to revoke the access token
-        $token = AccessTokenModel::findById($tokenId);
+        $token = AccessTokenModel::findByPk($tokenId);
         $token->revoked = '1';
         $token->save();
     }
 
     public function isAccessTokenRevoked($tokenId)
     {
-        $token = AccessTokenModel::findById($tokenId);
+        $token = AccessTokenModel::findByPk($tokenId);
 
         return '1' === $token->revoked;
     }
 
     public function getNewToken(ClientEntityInterface $clientEntity, array $scopes, $userIdentifier = null)
     {
-        $accessToken = new AccessTokenModel();
+        $accessToken = new AccessTokenEntity();
         $accessToken->setClient($clientEntity);
-
         foreach ($scopes as $scope) {
             $accessToken->addScope($scope);
         }

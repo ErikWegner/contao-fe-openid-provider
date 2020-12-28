@@ -8,3 +8,4 @@ $GLOBALS['TL_MODELS']['tl_feopenid_client'] = ErikWegner\FeOpenidProvider\Model\
 $GLOBALS['TL_MODELS']['tl_feopenid_redirecturi'] = ErikWegner\FeOpenidProvider\Model\RedirectUriModel::class;
 $GLOBALS['TL_MODELS']['tl_feopenid_accesstoken'] = ErikWegner\FeOpenidProvider\Model\AccessTokenModel::class;
 $GLOBALS['TL_MODELS']['tl_feopenid_authcode'] = ErikWegner\FeOpenidProvider\Model\AuthCodeModel::class;
+$GLOBALS['TL_MODELS']['tl_feopenid_refreshtoken'] = ErikWegner\FeOpenidProvider\Model\RefreshTokenModel::class;

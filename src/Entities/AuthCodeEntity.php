@@ -10,7 +10,7 @@ declare(strict_types=1);
  * @license LGPL-3.0-or-later
  */
 
-namespace ErikWegner\FeOpenidProvider\Model;
+namespace ErikWegner\FeOpenidProvider\Entities;
 
 use League\OAuth2\Server\Entities\AuthCodeEntityInterface;
 use League\OAuth2\Server\Entities\Traits\AuthCodeTrait;
@@ -20,5 +20,4 @@ use League\OAuth2\Server\Entities\Traits\TokenEntityTrait;
 class AuthCodeEntity implements AuthCodeEntityInterface
 {
     use EntityTrait, TokenEntityTrait, AuthCodeTrait;
-
 }

@@ -1,16 +1,16 @@
 <?php
 
-$GLOBALS['TL_DCA']['tl_feopenid_accesstoken'] = [
+$GLOBALS['TL_DCA']['tl_feopenid_refreshtoken'] = [
     'config' => [
         'dataContainer' => 'Table',
         'sql' => [
             'keys' => [
-                'code' => 'primary',
+                'token' => 'primary',
             ],
         ],
     ],
     'fields' => [
-        'code' => [
+        'token' => [
             'sql' => ['type' => 'string', 'length' => 255, 'default' => '']
         ],
         'tstamp' => [
@@ -19,15 +19,7 @@ $GLOBALS['TL_DCA']['tl_feopenid_accesstoken'] = [
         'expiryDateTime' => [
             'sql' => ['type' => 'integer', 'unsigned' => true, 'default' => 0]
         ],
-        'userIdentifier' => [
-            'sql' => ['type' => 'integer', 'unsigned' => true, 'default' => 0]
-        ],
-        'client' => [
-            'foreignKey' => 'tl_feopenid_client.name',
-            'sql' => ['type' => 'integer', 'unsigned' => true, 'default' => 0],
-            'relation' => ['type' => 'belongsTo', 'load' => 'lazy']
-        ],
-        'arrscopes' => [
+        'accessToken' => [
             'inputType' => 'text',
             'sql' => ['type' => 'string', 'length' => 255, 'default' => '']
         ],
