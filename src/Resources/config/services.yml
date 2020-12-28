@@ -5,6 +5,8 @@ services:
     feopenidprovider.service:
         class: ErikWegner\FeOpenidProvider\Service\AuthorizationServerService
         public: true
+        arguments:
+            - '@contao.framework'
 
     ErikWegner\FeOpenidProvider\Controller\AuthCodeController:
         arguments:

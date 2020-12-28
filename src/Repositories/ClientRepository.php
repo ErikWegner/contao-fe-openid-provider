@@ -26,5 +26,16 @@ class ClientRepository implements ClientRepositoryInterface {
      *
      * @return bool
      */
-    public function validateClient($clientIdentifier, $clientSecret, $grantType);
+    public function validateClient($clientIdentifier, $clientSecret, $grantType) {
+        $client = $this->getClientEntity($clientIdentifier);
+        if ($client == null) {
+            return false;
+        }
+        
+        if ($client->isConfidential() && $client->secret != $client) {
+            return false;
+        }
+        
+        return true;
+    }
 }
