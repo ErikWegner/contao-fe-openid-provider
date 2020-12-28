@@ -36,14 +36,14 @@ class AuthCodeRepository implements AuthCodeRepositoryInterface
     public function revokeAuthCode($codeId): void
     {
         // Some logic to revoke the auth code in a database
-        $code = AuthCodeModel::findById($codeId);
+        $code = AuthCodeModel::findByPk($codeId);
         $code->revoked = '1';
         $code->save();
     }
 
     public function isAuthCodeRevoked($codeId)
     {
-        $code = AuthCodeModel::findById($codeId);
+        $code = AuthCodeModel::findByPk($codeId);
 
         return '1' === $code->revoked;
     }

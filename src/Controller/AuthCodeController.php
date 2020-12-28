@@ -15,6 +15,7 @@ namespace ErikWegner\FeOpenidProvider\Controller;
 use Laminas\Diactoros\Stream;
 use ErikWegner\FeOpenidProvider\Service\AuthorizationServerService;
 use ErikWegner\FeOpenidProvider\Model\UserModel;
+use League\OAuth2\Server\Exception\OAuthServerException;
 use Nyholm\Psr7\Factory\Psr17Factory;
 use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
 use Symfony\Bridge\PsrHttpMessage\Factory\PsrHttpFactory;
