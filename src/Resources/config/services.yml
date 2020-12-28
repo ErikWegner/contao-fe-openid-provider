@@ -1,3 +1,13 @@
 services:
     _defaults:
         autoconfigure: true
+
+    feopenidprovider.service:
+        class: ErikWegner\FeOpenidProvider\Service\AuthorizationServerService
+        public: true
+
+    ErikWegner\FeOpenidProvider\Controller\AuthCodeController:
+        arguments:
+            - '@feopenidprovider.service'
+        tags:
+            - controller.service_arguments
