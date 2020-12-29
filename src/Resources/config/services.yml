@@ -1,3 +1,17 @@
 services:
     _defaults:
         autoconfigure: true
+
+    feopenidprovider.service:
+        class: ErikWegner\FeOpenidProvider\Service\AuthorizationServerService
+        public: true
+        arguments:
+            - '@contao.framework'
+
+    ErikWegner\FeOpenidProvider\Controller\AuthCodeController:
+        arguments:
+            - '@feopenidprovider.service'
+            - '@security.helper'
+            - '@uri_signer'
+        tags:
+            - controller.service_arguments
