@@ -54,10 +54,14 @@ class AccessTokenEntity implements AccessTokenEntityInterface
             ->relatedTo((string) $this->getUserIdentifier())
             ->withClaim('scopes', $this->getScopes());
 
-        if ($this->member) {
-            if ($this->member->firstname) {
-                $jwtbuilder->withClaim('firstname', $this->member->firstname);
-                $jwtbuilder->withClaim('lastname', $this->member->lastname);
+        foreach ($GLOBALS['FEOPENID']['access_token_additional_fields_callbacks'] as $key => $callbackfunc) {
+            $callbackResult = call_user_func_array($callbackfunc, array($this->member));
+            if ($key === '') {
+                foreach ($callbackResult as $claimName => $claimValue) {
+                    $jwtbuilder->withClaim($claimName, $claimValue);
+                }
+            } else {
+                $jwtbuilder->withClaim($key, $callbackResult);
             }
         }
 
