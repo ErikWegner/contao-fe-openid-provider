@@ -12,7 +12,6 @@ declare(strict_types=1);
 
 namespace ErikWegner\FeOpenidProvider\Entities;
 
-use DateTimeImmutable;
 use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
 use League\OAuth2\Server\Entities\Traits\AccessTokenTrait;
 use League\OAuth2\Server\Entities\Traits\EntityTrait;
@@ -26,18 +25,26 @@ class AccessTokenEntity implements AccessTokenEntityInterface
 
     protected $member;
 
-    function getMember()
+    /**
+     * Generate a string representation from the access token.
+     */
+    public function __toString()
+    {
+        return $this->convertToJWT()->toString();
+    }
+
+    public function getMember()
     {
         return $this->member;
     }
 
-    function setMember($member): void
+    public function setMember($member): void
     {
         $this->member = $member;
     }
 
     /**
-     * Generate a JWT from the access token
+     * Generate a JWT from the access token.
      *
      * @return Token
      */
@@ -48,15 +55,17 @@ class AccessTokenEntity implements AccessTokenEntityInterface
         $jwtbuilder = $this->jwtConfiguration->builder()
             ->permittedFor($this->getClient()->getIdentifier())
             ->identifiedBy($this->getIdentifier())
-            ->issuedAt(new DateTimeImmutable())
-            ->canOnlyBeUsedAfter(new DateTimeImmutable())
+            ->issuedAt(new \DateTimeImmutable())
+            ->canOnlyBeUsedAfter(new \DateTimeImmutable())
             ->expiresAt($this->getExpiryDateTime())
             ->relatedTo((string) $this->getUserIdentifier())
-            ->withClaim('scopes', $this->getScopes());
+            ->withClaim('scopes', $this->getScopes())
+        ;
 
         foreach ($GLOBALS['FEOPENID']['access_token_additional_fields_callbacks'] as $key => $callbackfunc) {
-            $callbackResult = call_user_func_array($callbackfunc, array($this->member));
-            if ($key === '') {
+            $callbackResult = \call_user_func_array($callbackfunc, [$this->member]);
+
+            if ('' === $key) {
                 foreach ($callbackResult as $claimName => $claimValue) {
                     $jwtbuilder->withClaim($claimName, $claimValue);
                 }

@@ -76,15 +76,18 @@ class AuthCodeController extends AbstractController
     public function authorize(Request $symfonyRequest): Response
     {
         $feuser = $this->security->getUser();
+
         if (!$feuser) {
             $uri = $symfonyRequest->getUriForPath('/fe-login.html');
-            $signedUri = $this->uriSigner->sign($uri . '?redirect=' . \urlencode($symfonyRequest->getUri()));
+            $signedUri = $this->uriSigner->sign($uri.'?redirect='.urlencode($symfonyRequest->getUri()));
+
             return $this->redirect($signedUri);
         }
 
         $request = $this->psrHttpFactory->createRequest($symfonyRequest);
         $server = $this->server->getServer();
         $response = $this->psr17Factory->createResponse();
+
         try {
             // Validate the HTTP request and return an AuthorizationRequest object.
             // The auth request object can be serialized into a user's session
