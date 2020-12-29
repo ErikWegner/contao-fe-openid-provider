@@ -10,7 +10,13 @@ details are available through the OpenID mechanism.
 
 ## Installation
 
-For detailed instruction, see [library instructions][2].
+1. Install this extension with composer.
+2. Then create the required keys. For detailed instruction, see [library instructions][2].
+3. Configure the extension.
+
+Install:
+
+    composer require erikwegner/fe-openid-provider
 
 Generate a key:
 
@@ -39,16 +45,20 @@ contao:
 
 ## Usage
 
-Setup a client
+1. Create a client in Contao (System » Members-OpenID).
+2. Setup a login page at `/fe-login.html`.
+    1. Create a page.
+    2. Add a login form.
+    3. Enable _Redirect back_ for the login form.
 
 ### Client OpenID settings:
 
-Grant Type: authorization code  
-Callback URL: One of the configured redirect URI values  
-Auth URL: https://your.contao.install/fe/authorize  
-Access Token URL: https://your.contao.install/fe/access_token  
-Client ID: The configured `identifier` for the app  
-Scope: email|basic  
+Grant Type: `authorization code`
+Callback URL: One of the configured redirect URI values
+Auth URL: `https://your.contao.install/fe/authorize`
+Access Token URL: `https://your.contao.install/fe/access_token`
+Client ID: The configured `identifier` for the app
+Scope: email|basic
 
 [1]: https://contao.org
 [2]: https://oauth2.thephpleague.com/installation/
