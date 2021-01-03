@@ -43,7 +43,7 @@ class ResourceServerService
 
     public function getServer(): ResourceServer
     {
-        if(!isset($this->service)) {
+        if (!isset($this->service)) {
             $accessTokenRepository = new AccessTokenRepository();
             $configs = $this->getConfig()->get('feopenidprovider');
             $publicKeyPath = $configs['keypath'].'/public.key';
