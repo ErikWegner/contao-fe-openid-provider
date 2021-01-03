@@ -8,10 +8,22 @@ services:
         arguments:
             - '@contao.framework'
 
+    feopenidprovider.resourceservice:
+        class: ErikWegner\FeOpenidProvider\Service\ResourceServerService
+        public: true
+        arguments:
+            - '@contao.framework'
+
     ErikWegner\FeOpenidProvider\Controller\AuthCodeController:
         arguments:
             - '@feopenidprovider.service'
             - '@security.helper'
             - '@uri_signer'
+        tags:
+            - controller.service_arguments
+
+    ErikWegner\FeOpenidProvider\Controller\UserinfoController:
+        arguments:
+            - '@feopenidprovider.resourceservice'
         tags:
             - controller.service_arguments

@@ -28,6 +28,7 @@ class AuthorizationServerService
      * @var Config The configuration
      */
     protected $config;
+
     /**
      * @var ContaoFramework
      */
