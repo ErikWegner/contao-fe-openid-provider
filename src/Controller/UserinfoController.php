@@ -25,7 +25,6 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class UserinfoController extends AbstractController
 {
-
     /**
      * @var ResourceServerService ResourceServerService
      */
@@ -47,29 +46,34 @@ class UserinfoController extends AbstractController
         $response = $psr17Factory->createResponse();
 
         $server = $this->resService->getServer();
+
         try {
             $authenticatedRequest = $server->validateAuthenticatedRequest($request);
             $userid = $authenticatedRequest->getAttribute('oauth_user_id');
             $r['user'] = $userid;
             $member = MemberModel::findById($userid);
+
             if ($member) {
                 $r['username'] = $member->username;
                 $r['given_name'] = $member->firstname;
                 $r['family_name'] = $member->lastname;
                 $r['email'] = $member->email;
                 $groups = $member->getRelated('groups');
-                $r['groups'] = array_map(function ($g) {
-                    return $g->name;
-                }, $groups->getModels());
+                $r['groups'] = array_map(
+                    static function ($g) {
+                        return $g->name;
+                    },
+                    $groups->getModels()
+                );
             }
 
             $response = new Response(json_encode($r), 200);
             $response->headers->set('Content-Type', 'application/json');
 
             return $response;
-
         } catch (OAuthServerException $exception) {
             $httpFoundationFactory = new HttpFoundationFactory();
+
             return $httpFoundationFactory->createResponse($exception->generateHttpResponse($response));
         }
     }
