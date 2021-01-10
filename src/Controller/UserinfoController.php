@@ -53,8 +53,10 @@ class UserinfoController extends AbstractController
             $r['user'] = $userid;
             $member = MemberModel::findById($userid);
             if ($member) {
+                $r['username'] = $member->username;
                 $r['given_name'] = $member->firstname;
                 $r['family_name'] = $member->lastname;
+                $r['email'] = $member->email;
                 $groups = $member->getRelated('groups');
                 $r['groups'] = array_map(function ($g) {
                     return $g->name;
