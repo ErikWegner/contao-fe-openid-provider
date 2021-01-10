@@ -128,14 +128,19 @@ class AuthCodeController extends AbstractController
         $response = $this->psr17Factory->createResponse();
 
         try {
-            return $this->httpFoundationFactory->createResponse($server->respondToAccessTokenRequest($request, $response));
+            return $this->addCors($this->httpFoundationFactory->createResponse($server->respondToAccessTokenRequest($request, $response)));
         } catch (OAuthServerException $exception) {
-            return $this->httpFoundationFactory->createResponse($exception->generateHttpResponse($response));
+            return $this->addCors($this->httpFoundationFactory->createResponse($exception->generateHttpResponse($response)));
         } catch (\Exception $exception) {
             $body = new Stream('php://temp', 'r+');
             $body->write($exception->getMessage());
 
-            return $this->httpFoundationFactory->createResponse($response->withStatus(500)->withBody($body));
+            return $this->addCors($this->httpFoundationFactory->createResponse($response->withStatus(500)->withBody($body)));
         }
+    }
+    
+    protected function addCors(Response $response) {
+        $response->headers->set('Access-Control-Allow-Origin', '*');
+        return $response;
     }
 }
