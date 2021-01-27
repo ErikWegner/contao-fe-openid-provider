@@ -47,4 +47,9 @@ class ClientModel extends Model implements ClientEntityInterface
 
         return $cols;
     }
+
+    public function isConfidential()
+    {
+        return $this->confidential;
+    }
 }

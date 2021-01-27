@@ -21,6 +21,7 @@ use ErikWegner\FeOpenidProvider\Repositories\RefreshTokenRepository;
 use ErikWegner\FeOpenidProvider\Repositories\ScopeRepository;
 use League\OAuth2\Server\AuthorizationServer as LeagueAuthorizationServer;
 use League\OAuth2\Server\Grant\AuthCodeGrant;
+use League\OAuth2\Server\Grant\ClientCredentialsGrant;
 
 class AuthorizationServerService
 {
@@ -75,6 +76,10 @@ class AuthorizationServerService
             $this->server->enableGrantType(
                 $authCodeGrant,
                 new \DateInterval('PT1H')
+            );
+            $this->server->enableGrantType(
+                new ClientCredentialsGrant(),
+                new \DateInterval('PT1H') // access tokens will expire after 1 hour
             );
         }
 

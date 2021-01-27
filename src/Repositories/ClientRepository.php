@@ -46,7 +46,7 @@ class ClientRepository implements ClientRepositoryInterface
             return false;
         }
 
-        if ($client->isConfidential() && $client->secret !== $client) {
+        if ($client->isConfidential() && $client->secret !== $clientSecret) {
             return false;
         }
 
