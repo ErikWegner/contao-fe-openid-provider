@@ -15,11 +15,9 @@ namespace ErikWegner\FeOpenidProvider\Model;
 use Contao\Model;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Entities\Traits\ClientTrait;
-use League\OAuth2\Server\Entities\Traits\EntityTrait;
 
 class ClientModel extends Model implements ClientEntityInterface
 {
-    use EntityTrait;
     use ClientTrait;
 
     /**
@@ -51,5 +49,15 @@ class ClientModel extends Model implements ClientEntityInterface
     public function isConfidential()
     {
         return $this->confidential;
+    }
+
+    public function getIdentifier()
+    {
+        return $this->identifier;
+    }
+
+    public function getName()
+    {
+        return $this->name;
     }
 }
