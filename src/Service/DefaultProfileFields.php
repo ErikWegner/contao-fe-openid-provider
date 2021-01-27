@@ -16,7 +16,7 @@ use Contao\MemberModel;
 
 class DefaultProfileFields
 {
-    public static function generateFromMember(MemberModel $member)
+    public static function generateFromMember(?MemberModel $member)
     {
         $r = [];
 
@@ -28,7 +28,7 @@ class DefaultProfileFields
         return $r;
     }
 
-    public static function generateContaoStructureFromMember(MemberModel $member)
+    public static function generateContaoStructureFromMember(?MemberModel $member)
     {
         $r = [];
 
