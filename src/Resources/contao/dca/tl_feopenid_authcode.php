@@ -23,9 +23,7 @@ $GLOBALS['TL_DCA']['tl_feopenid_authcode'] = [
             'sql' => ['type' => 'integer', 'unsigned' => true, 'default' => 0]
         ],
         'client' => [
-            'foreignKey' => 'tl_feopenid_client.name',
-            'sql' => ['type' => 'integer', 'unsigned' => true, 'default' => 0],
-            'relation' => ['type' => 'belongsTo', 'load' => 'lazy']
+            'sql' => ['type' => 'string', 'length' => 255, 'default' => '']
         ],
         'arrscopes' => [
             'inputType' => 'text',
