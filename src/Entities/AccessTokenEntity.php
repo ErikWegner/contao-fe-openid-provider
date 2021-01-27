@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-/*
+/**
  * This file is part of fe-openid-provider.
  *
  * (c) Erik Wegner
@@ -30,7 +30,7 @@ class AccessTokenEntity implements AccessTokenEntityInterface
      */
     public function __toString()
     {
-        return $this->convertToJWT()->toString();
+        return $this->_convertToJWT()->toString();
     }
 
     public function getMember()
@@ -48,7 +48,7 @@ class AccessTokenEntity implements AccessTokenEntityInterface
      *
      * @return Token
      */
-    private function convertToJWT()
+    private function _convertToJWT()
     {
         $this->initJwtConfiguration();
 
@@ -59,8 +59,7 @@ class AccessTokenEntity implements AccessTokenEntityInterface
             ->canOnlyBeUsedAfter(new \DateTimeImmutable())
             ->expiresAt($this->getExpiryDateTime())
             ->relatedTo((string) $this->getUserIdentifier())
-            ->withClaim('scopes', $this->getScopes())
-        ;
+            ->withClaim('scopes', $this->getScopes());
 
         foreach ($GLOBALS['FEOPENID']['access_token_additional_fields_callbacks'] as $key => $callbackfunc) {
             $callbackResult = \call_user_func_array($callbackfunc, [$this->member]);
