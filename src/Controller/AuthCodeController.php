@@ -138,8 +138,9 @@ class AuthCodeController extends AbstractController
             return $this->addCors($this->httpFoundationFactory->createResponse($response->withStatus(500)->withBody($body)));
         }
     }
-    
-    protected function addCors(Response $response) {
+
+    protected function addCors(Response $response)
+    {
         $response->headers->set('Access-Control-Allow-Origin', '*');
         return $response;
     }
