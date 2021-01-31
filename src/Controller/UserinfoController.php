@@ -38,7 +38,7 @@ class UserinfoController extends AbstractController
     /**
      * @Route("/fe/userinfo", name="feopenidprovider.userinfo", methods={"GET"})
      */
-    public function authorize(Request $symfonyRequest): Response
+    public function userinfo(Request $symfonyRequest): Response
     {
         $psr17Factory = new Psr17Factory();
         $psrHttpFactory = new PsrHttpFactory($psr17Factory, $psr17Factory, $psr17Factory, $psr17Factory);
