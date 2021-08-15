@@ -59,21 +59,21 @@ $GLOBALS['TL_DCA']['tl_feopenid_client'] = [
             'label' => &$GLOBALS['TL_LANG']['tl_feopenid_client']['identifier'],
             'search' => true,
             'inputType' => 'text',
-            'eval' => ['unique' => true, 'tl_class' => 'w50', 'maxlength' => 255, 'mandatory' => true],
+            'eval' => ['unique' => true, 'tl_class' => 'w100', 'maxlength' => 255, 'mandatory' => true],
             'sql' => ['type' => 'string', 'length' => 255, 'default' => '']
         ],
         'confidential' => [
             'label' => &$GLOBALS['TL_LANG']['tl_feopenid_client']['confidential'],
             'filter' => true,
             'inputType' => 'checkbox',
-            'eval' => ['tl_class' => 'w100'],
+            'eval' => ['tl_class' => 'w50'],
             'sql' => ['type' => 'string', 'length' => 1, 'default' => '']
         ],
         'secret' => [
             'label' => &$GLOBALS['TL_LANG']['tl_feopenid_client']['secret'],
             'filter' => true,
             'inputType' => 'text',
-            'eval' => ['tl_class' => 'w50', 'maxlength' => 255, 'mandatory' => true],
+            'eval' => ['tl_class' => 'w50', 'maxlength' => 255, 'mandatory' => false],
             'sql' => ['type' => 'string', 'length' => 255, 'default' => '']
         ],
     ],

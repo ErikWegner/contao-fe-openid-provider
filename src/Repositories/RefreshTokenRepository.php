@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace ErikWegner\FeOpenidProvider\Repositories;
 
+use Contao\Database;
 use ErikWegner\FeOpenidProvider\Entities\RefreshTokenEntity;
 use ErikWegner\FeOpenidProvider\Model\RefreshTokenModel;
 use League\OAuth2\Server\Entities\RefreshTokenEntityInterface;
@@ -23,6 +24,7 @@ class RefreshTokenRepository implements RefreshTokenRepositoryInterface
     {
         // Some logic to persist the refresh token in a database
         $refreshTokenModel = new RefreshTokenModel();
+        $refreshTokenModel->tstamp = time();
         $refreshTokenModel->token = $refreshTokenEntity->getIdentifier();
         $refreshTokenModel->expiryDateTime = $refreshTokenEntity->getExpiryDateTime()->getTimestamp();
         $refreshTokenModel->accessToken = $refreshTokenEntity->getAccessToken()->getIdentifier();
@@ -47,5 +49,10 @@ class RefreshTokenRepository implements RefreshTokenRepositoryInterface
     public function getNewRefreshToken()
     {
         return new RefreshTokenEntity();
+    }
+    
+    public static function purgeExpiredTokens() {
+        $strQuery = 'DELETE FROM ' . RefreshTokenModel::getTable() . ' WHERE expiryDateTime < ?';
+        Database::getInstance()->prepare($strQuery)->execute(time());
     }
 }

@@ -10,6 +10,9 @@ $GLOBALS['TL_MODELS']['tl_feopenid_accesstoken'] = ErikWegner\FeOpenidProvider\M
 $GLOBALS['TL_MODELS']['tl_feopenid_authcode'] = ErikWegner\FeOpenidProvider\Model\AuthCodeModel::class;
 $GLOBALS['TL_MODELS']['tl_feopenid_refreshtoken'] = ErikWegner\FeOpenidProvider\Model\RefreshTokenModel::class;
 
+/** Clean expired tokens */
+$GLOBALS['TL_CRON']['hourly'][] = [\ErikWegner\FeOpenidProvider\Service\Cron::class, 'onHourly'];
+
 /**
  * Register callbacks to provide additional fields for access tokens.
  *
