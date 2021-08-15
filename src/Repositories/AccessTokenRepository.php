@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace ErikWegner\FeOpenidProvider\Repositories;
 
+use Contao\Database;
 use Contao\MemberModel;
 use ErikWegner\FeOpenidProvider\Entities\AccessTokenEntity;
 use ErikWegner\FeOpenidProvider\Model\AccessTokenModel;
@@ -25,6 +26,7 @@ class AccessTokenRepository implements AccessTokenRepositoryInterface
     {
         // Some logic here to save the access token to a database
         $accessTokenModel = new AccessTokenModel();
+        $accessTokenModel->tstamp = time();
         $accessTokenModel->code = $accessTokenEntity->getIdentifier();
         $accessTokenModel->expiryDateTime = $accessTokenEntity->getExpiryDateTime()->getTimestamp();
         $accessTokenModel->userIdentifier = $accessTokenEntity->getUserIdentifier();
@@ -66,5 +68,10 @@ class AccessTokenRepository implements AccessTokenRepositoryInterface
         $accessToken->setMember($member);
 
         return $accessToken;
+    }
+
+    public static function purgeExpiredTokens() {
+        $strQuery = 'DELETE FROM ' . AccessTokenModel::getTable() . ' WHERE expiryDateTime < ?';
+        Database::getInstance()->prepare($strQuery)->execute(time());
     }
 }

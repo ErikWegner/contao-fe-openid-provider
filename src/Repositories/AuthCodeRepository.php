@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace ErikWegner\FeOpenidProvider\Repositories;
 
+use Contao\Database;
 use ErikWegner\FeOpenidProvider\Entities\AuthCodeEntity;
 use ErikWegner\FeOpenidProvider\Model\AuthCodeModel;
 use League\OAuth2\Server\Entities\AuthCodeEntityInterface;
@@ -23,6 +24,7 @@ class AuthCodeRepository implements AuthCodeRepositoryInterface
     {
         // Some logic to persist the auth code to a database
         $authCodeModel = new AuthCodeModel();
+        $authCodeModel->tstamp = time();
         $authCodeModel->code = $authCodeEntity->getIdentifier();
         $authCodeModel->expiryDateTime = $authCodeEntity->getExpiryDateTime()->getTimestamp();
         $authCodeModel->userIdentifier = $authCodeEntity->getUserIdentifier();
@@ -54,5 +56,10 @@ class AuthCodeRepository implements AuthCodeRepositoryInterface
     public function getNewAuthCode()
     {
         return new AuthCodeEntity();
+    }
+    
+    public static function purgeExpiredTokens() {
+        $strQuery = 'DELETE FROM ' . AuthCodeModel::getTable() . ' WHERE expiryDateTime < ?';
+        Database::getInstance()->prepare($strQuery)->execute(time());
     }
 }
