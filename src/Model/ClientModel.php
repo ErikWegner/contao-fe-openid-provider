@@ -36,14 +36,16 @@ class ClientModel extends Model implements ClientEntityInterface
      */
     public function getRedirectUri()
     {
-        $col = RedirectUriModel::findBy('pid', $this->id);
-        $cols = [];
+        $relatedUriModels = RedirectUriModel::findBy('pid', $this->id);
+        $uris = [];
 
-        foreach ($col as $e) {
-            $cols[] = $e->uri;
+        if ($relatedUriModels) {
+            foreach ($relatedUriModels as $relatedUriModel) {
+                $uris[] = $relatedUriModel->uri;
+            }
         }
 
-        return $cols;
+        return $uris;
     }
 
     public function isConfidential()

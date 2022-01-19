@@ -58,6 +58,7 @@ class UserinfoController extends AbstractController
                 $r['given_name'] = $member->firstname;
                 $r['family_name'] = $member->lastname;
                 $r['email'] = $member->email;
+                $r['updated'] = intval($member->tstamp);
                 $groups = $member->getRelated('groups');
                 $r['groups'] = array_map(
                     static function ($g) {

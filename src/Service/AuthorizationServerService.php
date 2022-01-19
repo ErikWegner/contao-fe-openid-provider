@@ -71,12 +71,12 @@ class AuthorizationServerService
             $authCodeGrant = new AuthCodeGrant(
                 $authCodeRepository,
                 $refreshTokenRepository,
-                new \DateInterval('PT10M') // access tokens will expire after 10 minutes
+                new \DateInterval('PT1M') // access tokens will expire after 10 minutes
             );
             $authCodeGrant->disableRequireCodeChallengeForPublicClients();
             $this->server->enableGrantType(
                 $authCodeGrant,
-                new \DateInterval('PT10M') // access tokens will expire after 10 minutes
+                new \DateInterval('PT1M') // access tokens will expire after 10 minutes
             );
             $this->server->enableGrantType(
                 new ClientCredentialsGrant(),
@@ -84,7 +84,7 @@ class AuthorizationServerService
             );
             $this->server->enableGrantType(
                 new RefreshTokenGrant($refreshTokenRepository),
-                new \DateInterval('PT10M') // access tokens will expire after 10 minutes
+                new \DateInterval('PT1M') // access tokens will expire after 10 minutes
             );
         }
 
