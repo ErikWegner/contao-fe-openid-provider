@@ -21,9 +21,15 @@ services:
             - '@uri_signer'
         tags:
             - controller.service_arguments
+        calls:
+            - method: setContainer
+              arguments: ['@service_container']
 
     ErikWegner\FeOpenidProvider\Controller\UserinfoController:
         arguments:
             - '@feopenidprovider.resourceservice'
         tags:
             - controller.service_arguments
+        calls:
+            - method: setContainer
+              arguments: ['@service_container']
