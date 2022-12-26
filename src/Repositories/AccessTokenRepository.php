@@ -29,7 +29,7 @@ class AccessTokenRepository implements AccessTokenRepositoryInterface
         $accessTokenModel->tstamp = time();
         $accessTokenModel->code = $accessTokenEntity->getIdentifier();
         $accessTokenModel->expiryDateTime = $accessTokenEntity->getExpiryDateTime()->getTimestamp();
-        $accessTokenModel->userIdentifier = $accessTokenEntity->getUserIdentifier();
+        $accessTokenModel->userIdentifier = $accessTokenEntity->getUserIdentifier() ? $accessTokenEntity->getUserIdentifier() : 0;
         $accessTokenModel->client = $accessTokenEntity->getClient()->getIdentifier();
         $accessTokenModel->arrscopes = implode(',', array_map(
             static function ($s) {

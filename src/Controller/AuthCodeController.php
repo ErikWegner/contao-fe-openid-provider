@@ -26,8 +26,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\UriSigner;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerInterface;
 
-class AuthCodeController extends AbstractController
+class AuthCodeController extends AbstractController implements LoggerAwareInterface
 {
     /**
      * @var PsrHttpFactory PsrHttpFactory
@@ -59,6 +61,11 @@ class AuthCodeController extends AbstractController
      */
     private $uriSigner;
 
+    /**
+     * @var LoggerInterface The logger
+     */
+    private $logger;
+
     public function __construct(AuthorizationServerService $server, Security $security, UriSigner $uriSigner)
     {
         $this->server = $server;
@@ -68,6 +75,11 @@ class AuthCodeController extends AbstractController
         $this->psr17Factory = $psr17Factory;
         $this->psrHttpFactory = new PsrHttpFactory($psr17Factory, $psr17Factory, $psr17Factory, $psr17Factory);
         $this->httpFoundationFactory = new HttpFoundationFactory();
+    }
+
+    public function setLogger(LoggerInterface $logger)
+    {
+        $this->logger = $logger;
     }
 
     /**
@@ -132,8 +144,10 @@ class AuthCodeController extends AbstractController
         } catch (OAuthServerException $exception) {
             return $this->addCors($this->httpFoundationFactory->createResponse($exception->generateHttpResponse($response)));
         } catch (\Exception $exception) {
+            $msg = $exception->getMessage();
+            $this->logger->error('Access token exception', ['msg' => $msg]);
             $body = new Stream('php://temp', 'r+');
-            $body->write($exception->getMessage());
+            $body->write($msg);
 
             return $this->addCors($this->httpFoundationFactory->createResponse($response->withStatus(500)->withBody($body)));
         }
