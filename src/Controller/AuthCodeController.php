@@ -82,7 +82,7 @@ class AuthCodeController extends AbstractController implements LoggerAwareInterf
         $this->logger = $logger;
     }
 
-    #[Route("/fe/authorize", name="feopenidprovider.authcode.authorize", methods={"GET"}, defaults={"_scope": "frontend"})]
+    #[Route("/fe/authorize", name: "feopenidprovider.authcode.authorize", methods: ["GET"], defaults: ["_scope": "frontend"])]
     public function authorize(Request $symfonyRequest): Response
     {
         $feuser = $this->security->getUser();
@@ -128,7 +128,7 @@ class AuthCodeController extends AbstractController implements LoggerAwareInterf
         }
     }
 
-    #[Route("/fe/access_token", name="feopenidprovider.authcode.access_token", methods={"POST"})]
+    #[Route("/fe/access_token", name: "feopenidprovider.authcode.access_token", methods: ["POST"])]
     public function access_token(Request $symfonyRequest): Response
     {
         $request = $this->psrHttpFactory->createRequest($symfonyRequest);
