@@ -5,4 +5,4 @@
 # PhpUnit
 /.phpunit.result.cache
 /phpunit.xml
-/nbproject/private/
+.php-cs-fixer.cache
