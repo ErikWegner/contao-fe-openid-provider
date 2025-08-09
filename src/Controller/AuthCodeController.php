@@ -77,7 +77,7 @@ class AuthCodeController extends AbstractController implements LoggerAwareInterf
         $this->httpFoundationFactory = new HttpFoundationFactory();
     }
 
-    public function setLogger(LoggerInterface $logger)
+    public function setLogger(LoggerInterface $logger): void
     {
         $this->logger = $logger;
     }
